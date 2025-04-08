@@ -1,0 +1,7 @@
+[package]
+name = "noz_project"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+typed-arena = "2.0.2"
