@@ -30,15 +30,11 @@ expr = let | app | if-expr | fun;
 
 app = app term | term;
 
-let = 'let' definition 'in' expr;
+let = 'let' id definition 'in' expr;
 
-definition = id [ ':' id ] '=' ( type_def | expr );
+definition = ( '::' type_expr | [ ':' id ] '=' expr );
 
-type_def = 'type' type_expr;
-
-type_expr = ( type_id | product_type | sum_type | function_type );
-
-type_id = id;
+type_expr = ( id | product_type | sum_type | function_type );
 
 product_type = '{' { id ':' id ';' } '}';
 
@@ -57,12 +53,5 @@ literal = numbers | strings | booleans | chars;
 
 ## Examples
 
-### Usage for question exprs
-
 ```ocaml
-(* Here it's annoying cause `x: Str` should be an affirmation but it has little sense to define something as `let x: Str in` if x is not defined. Or it could be empty instance. *)
-let show x =
-    if (? x: Str) then print(x)
-    else if (? x: Int) then printf("{i}", x)
-    else if (? x: Bool) then printf("{b}", x);
 ```
