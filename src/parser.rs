@@ -1,3 +1,5 @@
+struct ParseError(String);
+
 // WHAT IS NEEDED HERE: ARENA ALLOCATION IN A LL(*) PARSER
 enum Expr {
     Let {
@@ -50,3 +52,5 @@ enum Literal {
     Bool(bool),
     Char(char),
 }
+
+fn parse(l: Lexer) -> Result<Expr, ParseError> {}
