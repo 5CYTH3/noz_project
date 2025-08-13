@@ -17,12 +17,10 @@ enum Expr {
         args: Vec<String>,
         body: Box<Expr>,
     },
-    App(Application),
-}
-
-enum Application {
-    App(Box<Expr>, Term),
-    Term(Term),
+    App(Box<Expr>, Box<Expr>), // Function, Param(s)
+    Id(String),
+    Literal(Literal),
+    Grouped(Box<Expr>),
 }
 
 enum Definition {
@@ -38,12 +36,6 @@ enum TypeDef {
     ProductType(Vec<(String, String)>),
     SumType(Vec<TypeDef>),
     FunctionType(Box<TypeDef>, Box<TypeDef>),
-}
-
-enum Term {
-    Id(String),
-    Literal(Literal),
-    Grouped(Box<Expr>),
 }
 
 enum Literal {
