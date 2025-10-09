@@ -42,7 +42,7 @@ sum_type = '|' type_expr { '|' type_expr };
 
 function_type = type_expr '->' type_expr;
 
-fun = [ 'ifx' ] 'fun' { id } '->' expr;
+fun = 'fun' [ 'ifx' ]  { id } '->' expr;
 
 if-expr = 'if' expr 'then' expr 'else' expr;
 

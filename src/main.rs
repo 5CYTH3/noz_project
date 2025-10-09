@@ -1,9 +1,12 @@
 use lexer::Lexer;
+use parser::Parser;
 
 pub mod lexer;
 pub mod parser;
 
 fn main() {
-    let lexer = Lexer::new("let x = fun x y -> x + y");
-    lexer.for_each(|x| println!("{:?}", x));
+    let mut lexer = Lexer::new("let x = fun a b -> 1 in if 1 then 1 else 0");
+    let mut parser = Parser::new(&mut lexer);
+    let result = parser.parse();
+    println!("{:#?}", result)
 }

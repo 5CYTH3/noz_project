@@ -29,6 +29,7 @@ pub enum Kind {
 
 // Need push-back linked list?
 
+#[derive(Debug)]
 pub struct Lexer<'a> {
     input: &'a str,
     cursor: usize,
@@ -60,20 +61,14 @@ impl<'a> Lexer<'a> {
         self.bytes.get(self.cursor).copied()
     }
 
-    pub fn peek(&mut self) -> Option<Kind> {
+    pub fn peek(&mut self) -> Option<&Kind> {
         if self.peeked.is_none() {
-            self.peeked = self.next();
+            self.peeked = self.inner_next(); // next_inner consumes from the underlying source
         }
-        self.peeked.clone()
+        self.peeked.as_ref()
     }
-}
 
-// TODO: Implement strings, bool and chars recognition.
-// Or maybe should `bool` be defined like would `+` be in core ?
-impl<'a> Iterator for Lexer<'a> {
-    type Item = Kind;
-
-    fn next(&mut self) -> Option<Kind> {
+    fn inner_next(&mut self) -> Option<Kind> {
         while matches!(self.peek_byte(), Some(b' ' | b'\t' | b'\n' | b'\r')) {
             self.cursor += 1;
         }
@@ -141,8 +136,22 @@ impl<'a> Iterator for Lexer<'a> {
     }
 }
 
+// TODO: Implement strings, bool and chars recognition.
+// Or maybe should `bool` be defined like would `+` be in core ?
+impl<'a> Iterator for Lexer<'a> {
+    type Item = Kind;
+
+    fn next(&mut self) -> Option<Kind> {
+        if let Some(kind) = self.peeked.take() {
+            Some(kind)
+        } else {
+            self.inner_next()
+        }
+    }
+}
+
 fn is_number(b: u8) -> bool {
-    (b'1'..=b'9').contains(&b)
+    (b'0'..=b'9').contains(&b)
 }
 
 // Starts with a letter, rest can either be a letter or a number
