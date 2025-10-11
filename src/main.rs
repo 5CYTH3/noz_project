@@ -5,7 +5,7 @@ pub mod lexer;
 pub mod parser;
 
 fn main() {
-    let mut lexer = Lexer::new("let x = fun a b -> 1 in if 1 then 1 else 0");
+    let mut lexer = Lexer::new("let x = fun a b -> a in a + b * c");
     let mut parser = Parser::new(&mut lexer);
     let result = parser.parse();
     println!("{:#?}", result)
